@@ -16,13 +16,10 @@ var innerHeight = window.innerHeight;
 var innerWidth = 500;
 var innerHeight = 500;
 
-
 var windowHalfX = innerWidth / 2;
 var windowHalfY = innerHeight / 2;
 var rtTexture, material, quad;
 var delta = 0.0010;
-
-
 
 var texture3, material3, scene3;
 var texture4, material4, scene4;
@@ -135,9 +132,6 @@ function render() {
     renderer.setRenderTarget( null );
     renderer.clear();
     renderer.render( sceneScreen, cameraRTT );
-
-
-
 
     // Render second scene to screen
     // (using first scene as regular texture)
