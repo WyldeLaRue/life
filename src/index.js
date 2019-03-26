@@ -5,8 +5,8 @@ import OrbitControls from 'three-orbitcontrols';
 import vertexShaderSource from './shaders/vertexShader.vert';
 import fragment_shader_screen from './shaders/fragment_shader_screen.frag';
 import fragment_shader_copy from './shaders/fragment_shader_copy.frag';
-// import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag';
-import fragment_shader_pass_1 from './shaders/glider.frag';
+import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag';
+// import fragment_shader_pass_1 from './shaders/glider.frag';
 
 
 //** Declare Global Variables 
@@ -45,7 +45,7 @@ function init() {
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 0, 0, 1 ).normalize();
     sceneRTT.add( light );
-    scene.add(light);
+    // scene.add(light);
 
     light = new THREE.DirectionalLight( 0xffaaaa, 1.5 );
     light.position.set( 0, 0, - 1 ).normalize();
