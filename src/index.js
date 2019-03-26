@@ -54,6 +54,10 @@ function init() {
     scene.add(light);
 
 
+    var ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
+
+
     texture3 = new THREE.WebGLRenderTarget( innerWidth, innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBFormat } );
     texture4 = new THREE.WebGLRenderTarget( innerWidth, innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBFormat } );
 
