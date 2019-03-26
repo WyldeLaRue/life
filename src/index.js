@@ -3,11 +3,13 @@ import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
 
 import vertexShaderSource from './shaders/vertexShader.vert';
-import fragment_shader_screen from './shaders/fragment_shader_screen.frag'
-import fragment_shader_copy from './shaders/fragment_shader_copy.frag'
-import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag'
+import fragment_shader_screen from './shaders/fragment_shader_screen.frag';
+import fragment_shader_copy from './shaders/fragment_shader_copy.frag';
+// import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag';
+import fragment_shader_pass_1 from './shaders/glider.frag';
 
 
+//** Declare Global Variables 
 var container;
 var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
 var mouseX = 0, mouseY = 0;
@@ -43,9 +45,13 @@ function init() {
     var light = new THREE.DirectionalLight( 0xffffff );
     light.position.set( 0, 0, 1 ).normalize();
     sceneRTT.add( light );
+    scene.add(light);
+
     light = new THREE.DirectionalLight( 0xffaaaa, 1.5 );
     light.position.set( 0, 0, - 1 ).normalize();
     sceneRTT.add( light );
+
+    scene.add(light);
 
 
     texture3 = new THREE.WebGLRenderTarget( innerWidth, innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBFormat } );
@@ -66,7 +72,7 @@ function init() {
     var material3 = new THREE.ShaderMaterial( {
         uniforms: { tDiffuse: { value: texture3.texture, width: innerWidth, height: innerHeight } },
         vertexShader: vertexShaderSource,
-        fragmentShader: fragment_shader_screen,
+        fragmentShader: fragment_shader_copy,
         depthWrite: false
     } );
     var material4 = new THREE.ShaderMaterial( {
@@ -103,7 +109,7 @@ function init() {
     // var geometry = new THREE.SphereBufferGeometry( 10, 64, 32 );
     // var geometry = new THREE.TorusKnotBufferGeometry( 10, 2, 64, 64 );
     var geometry = new THREE.TorusBufferGeometry( 10, 3, 64, 100 );
-    var material2 = new THREE.MeshBasicMaterial({ color: 0xffffff, map: rtTexture.texture});
+    var material2 = new THREE.MeshLambertMaterial({ color: 0xffffff, map: rtTexture.texture});
     for ( var j = 0; j < n; j ++ ) {
         for ( var i = 0; i < n; i ++ ) {
             var mesh = new THREE.Mesh( geometry, material2 );
@@ -169,7 +175,7 @@ function render() {
     //** Clear rendering onto background.
     //** for some reason if we omit the previous block instead of rendering
     //** and then clearing it, we get self-rendering errors.
-    renderer.clear();    
+    // renderer.clear();    // <-- uncommenting this line disables the background
 
     // Render objects in front of background with same texture
     renderer.render( scene, camera );
