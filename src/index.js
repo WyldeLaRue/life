@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import * as THREE from 'three';
+import OrbitControls from 'three-orbitcontrols';
 
 import vertexShaderSource from './shaders/vertexShader.vert';
 import fragment_shader_screen from './shaders/fragment_shader_screen.frag'
@@ -23,6 +24,7 @@ var delta = 0.0010;
 
 var texture3, material3, scene3;
 var texture4, material4, scene4;
+var controls;
 init();
 animate();
 
@@ -96,6 +98,25 @@ function init() {
 
 
 
+    var n = 1;
+    // var geometry = new THREE.PlaneBufferGeometry( innerWidth, innerHeight );
+    // var geometry = new THREE.SphereBufferGeometry( 10, 64, 32 );
+    // var geometry = new THREE.TorusKnotBufferGeometry( 10, 2, 64, 64 );
+    var geometry = new THREE.TorusBufferGeometry( 10, 3, 64, 100 );
+    var material2 = new THREE.MeshBasicMaterial({ color: 0xffffff, map: rtTexture.texture});
+    for ( var j = 0; j < n; j ++ ) {
+        for ( var i = 0; i < n; i ++ ) {
+            var mesh = new THREE.Mesh( geometry, material2 );
+            mesh.position.x = ( i - ( n - 1 ) / 2 ) * 20;
+            mesh.position.y = ( j - ( n - 1 ) / 2 ) * 20;
+            mesh.position.z = 0;
+            mesh.rotation.y = - Math.PI / 2;
+            scene.add( mesh );
+        }
+    }
+
+
+
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     console.log(window.devicePixelRatio)
@@ -103,6 +124,13 @@ function init() {
     renderer.autoClear = false;
     container.appendChild( renderer.domElement );
 
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls.update();
+
+    // document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+
+
+    //** Render from fragment_shader_pass_1 onto texture3
     renderer.setRenderTarget( texture3 );
     renderer.clear();
     renderer.render( sceneRTT, cameraRTT );
@@ -113,27 +141,51 @@ function animate() {
     render();
 }
 function render() {
+    // renderSphere();
     var time = Date.now() * 0.0015;
     material.uniforms[ "time" ].value = (material.uniforms[ "time" ].value + delta) % 1;
-    // Render first scene into texture
+    controls.update();
+
+    //**  Render from texture3 onto texture4 using fragment_shader_screen
     renderer.setRenderTarget( texture4 );
     renderer.clear();
     renderer.render( scene3, cameraRTT );
 
+    //** Render from texture4 onto texture3 using fragment_shader_screen
     renderer.setRenderTarget( texture3 );
     renderer.clear();
     renderer.render( scene4, cameraRTT );
 
+    //** Render from texture3 onto rtTexture using {I'm not sure}
     renderer.setRenderTarget( rtTexture );
     renderer.clear();
     renderer.render( scene3, cameraRTT );
 
-    // Render full screen quad with generated texture
+    //** Render onto wallpaper behind objects
     renderer.setRenderTarget( null );
     renderer.clear();
     renderer.render( sceneScreen, cameraRTT );
 
-    // Render second scene to screen
-    // (using first scene as regular texture)
+    //** Clear rendering onto background.
+    //** for some reason if we omit the previous block instead of rendering
+    //** and then clearing it, we get self-rendering errors.
+    renderer.clear();    
+
+    // Render objects in front of background with same texture
     renderer.render( scene, camera );
+}
+
+function onDocumentMouseMove( event ) {        
+    mouseX = ( event.clientX - windowHalfX );
+    mouseY = ( event.clientY - windowHalfY );
+}
+
+function renderSphere() {
+    camera.position.x += ( mouseX - camera.position.x ) * .05;
+    camera.position.y += ( - mouseY - camera.position.y ) * .05;
+    camera.lookAt( scene.position );
+    if ( zmesh1 && zmesh2 ) {
+        zmesh1.rotation.y = - time;
+        zmesh2.rotation.y = - time + Math.PI / 2;
+    }
 }
