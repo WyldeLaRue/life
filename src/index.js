@@ -1,5 +1,5 @@
-
 import _ from 'lodash';
+import * as THREE from 'three';
 
 var container;
 var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
@@ -22,8 +22,6 @@ var texture3, material3, scene3;
 var texture4, material4, scene4;
 init();
 animate();
-
-
 
 function init() {
     container = document.getElementById( 'container' );
