@@ -9,7 +9,7 @@ import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag';
 // import fragment_shader_pass_1 from './shaders/glider.frag';
 
 
-//** Declare Global Variables 
+//** Declare Global Variables
 var container;
 var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
 var mouseX = 0, mouseY = 0;
@@ -179,19 +179,4 @@ function render() {
 
     // Render objects in front of background with same texture
     renderer.render( scene, camera );
-}
-
-function onDocumentMouseMove( event ) {        
-    mouseX = ( event.clientX - windowHalfX );
-    mouseY = ( event.clientY - windowHalfY );
-}
-
-function renderSphere() {
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( - mouseY - camera.position.y ) * .05;
-    camera.lookAt( scene.position );
-    if ( zmesh1 && zmesh2 ) {
-        zmesh1.rotation.y = - time;
-        zmesh2.rotation.y = - time + Math.PI / 2;
-    }
 }
