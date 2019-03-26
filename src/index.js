@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import * as THREE from 'three';
 
+import vertexShaderSource from './shaders/vertexShader.vert';
+import fragment_shader_screen from './shaders/fragment_shader_screen.frag'
+import fragment_shader_copy from './shaders/fragment_shader_copy.frag'
+import fragment_shader_pass_1 from './shaders/fragment_shader_pass_1.frag'
+
+
 var container;
 var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
 var mouseX = 0, mouseY = 0;
@@ -49,25 +55,25 @@ function init() {
     rtTexture = new THREE.WebGLRenderTarget( innerWidth, innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBFormat } );
     material = new THREE.ShaderMaterial( {
         uniforms: { time: { value: 0.0 } },
-        vertexShader: document.getElementById( 'vertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'fragment_shader_pass_1' ).textContent
+        vertexShader: vertexShaderSource,
+        fragmentShader: fragment_shader_pass_1,
     } );
     var materialScreen = new THREE.ShaderMaterial( {
         uniforms: { tDiffuse: { value: rtTexture.texture, width: innerWidth, height: innerHeight } },
-        vertexShader: document.getElementById( 'vertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'fragment_shader_copy' ).textContent,
+        vertexShader: vertexShaderSource,
+        fragmentShader: fragment_shader_copy,
         depthWrite: false
     } );
     var material3 = new THREE.ShaderMaterial( {
         uniforms: { tDiffuse: { value: texture3.texture, width: innerWidth, height: innerHeight } },
-        vertexShader: document.getElementById( 'vertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'fragment_shader_screen' ).textContent,
+        vertexShader: vertexShaderSource,
+        fragmentShader: fragment_shader_screen,
         depthWrite: false
     } );
     var material4 = new THREE.ShaderMaterial( {
         uniforms: { tDiffuse: { value: texture4.texture, width: innerWidth, height: innerHeight } },
-        vertexShader: document.getElementById( 'vertexShader' ).textContent,
-        fragmentShader: document.getElementById( 'fragment_shader_screen' ).textContent,
+        vertexShader: vertexShaderSource,
+        fragmentShader: fragment_shader_screen,
         depthWrite: false
     } );
 

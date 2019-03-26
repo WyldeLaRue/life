@@ -16,6 +16,7 @@
     "three": "^0.102.1"
   },
   "devDependencies": {
+    "glsl-shader-loader": "^0.1.6",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
   }
