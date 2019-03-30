@@ -28,7 +28,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-        title: 'Life!',
+        title: 'Life',
         filename: 'index.html',
         meta: {
             viewport: 'width=device-width, user-scalable=no, ' +
