@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import './css/index.css';
 
-import * as THREE from 'three';
+// import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
 
 import vertexShaderSource from './shaders/vertexShader.vert';
@@ -13,7 +13,7 @@ import initial_condition_fragment_shader from './shaders/fragment_shader_pass_1.
 
 import { generate_circle_kernel, generate_outer_circle_kernel } from './math_utils.js';
 import { pretty_print_array_as_matrix } from './math_utils.js';
-
+var THREE = import('three');
 
 //** Declare Global Variables
 var container;
