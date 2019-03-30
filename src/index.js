@@ -1,4 +1,6 @@
 import _ from 'lodash';
+import './css/index.css';
+
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols';
 
@@ -105,9 +107,8 @@ animate();
 function init() {
 
     // Get our canvas
-    container = document.getElementById( 'container' );
-
-
+    container = document.createElement('div');
+    document.body.appendChild(container);
 
     // First we setup our final screen
     camera = new THREE.PerspectiveCamera( 30, innerWidth / innerHeight, 1, 10000 );
