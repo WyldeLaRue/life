@@ -4,9 +4,10 @@ module.exports = {
   entry: './src/index.js',
   mode: 'development',
   output: {
-    filename: 'main.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'docs')
   },
+  devtool: "inline-source-map",
   module: {
     rules: [{
       test: /\.(frag|vert|glsl)$/,
