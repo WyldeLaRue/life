@@ -10,7 +10,6 @@ var config = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
-  devtool: 'export-source-map',
   module: {
     rules: [
       {
@@ -45,11 +44,12 @@ var module_exports = (env, argv) => {
     if (argv.mode == 'development') {
         config.mode = 'development';
         config.devtool = 'export-source-map';
-        config.path = path.resolve(__dirname, 'dist');
+        config.output.path = path.resolve(__dirname, 'dist');
     }
 
     if  (argv.mode == 'production') {
         config.mode = 'production';
+        config.output.path = path.resolve(__dirname, 'docs');
         config.optimization = {
             namedModules: false,
             namedChunks: false,
