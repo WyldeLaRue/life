@@ -21,8 +21,8 @@ var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
 var innerWidth = window.innerWidth;
 var innerHeight = window.innerHeight;
 
-var innerWidth = 500;
-var innerHeight = 500;
+var innerWidth = 1000;
+var innerHeight = 1000;
 
 var windowHalfX = innerWidth / 2;
 var windowHalfY = innerHeight / 2;
@@ -69,18 +69,33 @@ var controls;
 //     0.0, 0.0, 0.0, 0.0, 0.0,
 //     0.0, 0.0, 0.0, 0.0, 0.0
 // ];
-
-
 var kernel = [
-    1.0, 1.0, 1.0, 
-    1.0, 0.0, 1.0, 
-    1.0, 1.0, 1.0 
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
 ];
 
+var inner_kernel = [
+    1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0
+];
 
-// var kernel = generate_outer_kernel(3,1);
+// var kernel = [
+//     1.0, 1.0, 1.0, 
+//     1.0, 0.0, 1.0, 
+//     1.0, 1.0, 1.0 
+// ];
 
-var inner_kernel = [1.0];
+// var kernel = generate_outer_circle_kernel(3, 1);
+
+// var inner_kernel = generate_circle_kernel(1);
 
 
 var print_string = "Outer Kernel:\n" + pretty_print_array_as_matrix(kernel) + '\n\n'; 
@@ -168,7 +183,9 @@ function init() {
         uniforms: { 
             tDiffuse: { value: lifeTextureSecondary.texture }, 
             kernel: { value: normalized_kernel },
-            inner_kernel: { value: normalized_inner_kernel }
+            inner_kernel: { value: normalized_inner_kernel },
+            hx: { value: 1/innerWidth },
+            hy: { value: 1/innerHeight }
         },    
         vertexShader: vertexShaderSource,
         fragmentShader: rules_fragment_shader,

@@ -72,7 +72,7 @@ export function generate_circle_kernel(dimension) {
     var dim = dimension;
     var radius = 0.5*dim; 
 
-    var kernel = new Array(dim**2)
+    var kernel = new Array(dim**2);
     kernel.fill("default");
     var center_index = (dim**2 -1)/2;
     kernel[center_index] = 1.0;
@@ -95,9 +95,9 @@ export function generate_circle_kernel(dimension) {
 }
 
 export function generate_outer_circle_kernel(total_dim, inner_dim) {
-    total_kernel =  generate_circle_kernel(total_dim); 
-    inner_kernel = generate_circle_kernel(inner_dim); 
-    d = (total_dim - inner_dim)/2;
+    var total_kernel =  generate_circle_kernel(total_dim); 
+    var inner_kernel = generate_circle_kernel(inner_dim); 
+    var d = (total_dim - inner_dim)/2;
     for (var i = 0; i < inner_dim; i++) {
         for (var j = 0; j < inner_dim; j++) {
             var index = i + d + total_dim*(j + d);

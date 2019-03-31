@@ -10,6 +10,7 @@ var config = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  devtool: 'export-source-map',
   module: {
     rules: [
       {
@@ -70,7 +71,10 @@ var module_exports = (env, argv) => {
 }
 // weird bug, idk why this works, but returning a function is not working
 // There appears to be an active issue on it in the webpack github repo
-module.exports = module_exports("env", {mode: 'production'});
+// module.exports = module_exports("env", {mode: 'development'});
+
+
+module.exports = config;
 
 
 
