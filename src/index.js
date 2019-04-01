@@ -15,14 +15,47 @@ import { generate_circle_kernel, generate_outer_circle_kernel } from './math_uti
 import { pretty_print_array_as_matrix } from './math_utils.js';
 // var THREE = import('three');
 
+
+// ** GOLDEN
+var PARAMATERS = {
+    width: 256,
+    height: 256,
+    inner_radius: 7,
+    outer_radius: 21,
+    birth_min: 0.298,
+    birth_max: 0.315,
+    death_min: 0.382,
+    death_max: 0.7,
+    steepness_odd: 0.147,
+    steepness_even: 0.028,
+}
+
+
+var PARAMATERS = {
+    width: 256,
+    height: 256,
+    inner_radius: 7,
+    outer_radius: 21,
+    birth_min: 0.298,
+    birth_max: 0.315,
+    death_min: 0.3828,
+    death_max: 0.7,
+    steepness_odd: 0.147,
+    steepness_even: 0.028
+}
+
+
+console.log(PARAMATERS);
+
+
 //** Declare Global Variables
 var container;
 var cameraRTT, camera, sceneRTT, sceneScreen, scene, renderer, zmesh1, zmesh2;
 var innerWidth = window.innerWidth;
 var innerHeight = window.innerHeight;
 
-var innerWidth = 1000;
-var innerHeight = 1000;
+var innerWidth = PARAMATERS.width;
+var innerHeight = PARAMATERS.height;
 
 var windowHalfX = innerWidth / 2;
 var windowHalfY = innerHeight / 2;
@@ -35,72 +68,34 @@ var controls;
 
 
 
-// var kernel = [
-//     1.0, 1.0, 1.0, 
-//     1.0, 0.0, 1.0, 
-//     1.0, 1.0, 1.0 
-// ];
-
-
-// I'll save this one as interesting. Lives a long time with our random initial configuration.
-// var kernel = [
-//     0.0, 1.0, 1.0, 1.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 1.0, 0.0, 1.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 1.0, 1.0, 1.0, 0.0
-// ];
-
-
-
 
 // var kernel = [
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 1.0, 1.0, 1.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 2.0, 1.0, 2.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
 // ];
 
 // var inner_kernel = [
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 0.0, 1.0, 0.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0,
-//     0.0, 0.0, 0.0, 0.0, 0.0
-// ];
-var kernel = [
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0
-];
-
-var inner_kernel = [
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0
-];
-
-// var kernel = [
-//     1.0, 1.0, 1.0, 
-//     1.0, 0.0, 1.0, 
-//     1.0, 1.0, 1.0 
+//     1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0,
+//     1.0, 1.0, 1.0
 // ];
 
-// var kernel = generate_outer_circle_kernel(3, 1);
-
-// var inner_kernel = generate_circle_kernel(1);
 
 
-var print_string = "Outer Kernel:\n" + pretty_print_array_as_matrix(kernel) + '\n\n'; 
-print_string += 'Inner Kernel:\n' + pretty_print_array_as_matrix(inner_kernel);
-console.log(print_string);
+var kernel = generate_outer_circle_kernel(PARAMATERS.outer_radius, PARAMATERS.inner_radius);
+var inner_kernel = generate_circle_kernel(PARAMATERS.inner_radius);
+
+
+// var print_string = "Outer Kernel:\n" + pretty_print_array_as_matrix(kernel) + '\n\n'; 
+// print_string += 'Inner Kernel:\n' + pretty_print_array_as_matrix(inner_kernel);
+// console.log(print_string);
 
 // This is hacky, but it's the only reasonable way to do it
 var total_weight = kernel.reduce( (total,x) => total + x ); 
@@ -185,7 +180,13 @@ function init() {
             kernel: { value: normalized_kernel },
             inner_kernel: { value: normalized_inner_kernel },
             hx: { value: 1/innerWidth },
-            hy: { value: 1/innerHeight }
+            hy: { value: 1/innerHeight },
+            BIRTH_MIN:      { value: PARAMATERS.birth_min },
+            BIRTH_MAX:      { value: PARAMATERS.birth_max },
+            DEATH_MIN:      { value: PARAMATERS.death_min },
+            DEATH_MAX:      { value: PARAMATERS.death_max },
+            STEEPNESS_ODD:  { value: 4.0/PARAMATERS.steepness_odd },
+            STEEPNESS_EVEN: { value: 4.0/PARAMATERS.steepness_even }
         },    
         vertexShader: vertexShaderSource,
         fragmentShader: rules_fragment_shader,

@@ -94,6 +94,40 @@ export function generate_circle_kernel(dimension) {
     return kernel;
 }
 
+
+// @@ Matrices must be odd-dim and square.
+// Subtracts M2 from M1
+function matrix_difference(M1, M2) {
+    if (M1.length % 2 != 0 || M2.length % 2 != 0) {
+        console.log("only takes odd length matrices");
+        return 
+    }
+    if (Math.sqrt(M1.length) % 1 != 0 || Math.sqrt(M2.length) % 1 != 0) {
+        console.log("need square matrices");
+        return
+    }
+    if (M1.length < M2.length) {
+       console.log("M2 must be smaller");
+       return
+    }
+
+    var dim1 = Math.sqrt(M1.length); 
+    var dim2 = Math.sqrt(M2.length);
+    var offset = (dim1 - dim2)/2;
+    for (var i = 0; i < dim2; i++) {
+        for (var j = 0; j < dim2; j++) {
+            var index1 = i + d + dim1*(j + d);
+            var index2 = i + dim2*j;
+            M1[index1] = M1[index1] - M2[index2];
+        }
+    }
+
+    return M1
+
+
+
+}
+
 export function generate_outer_circle_kernel(total_dim, inner_dim) {
     var total_kernel =  generate_circle_kernel(total_dim); 
     var inner_kernel = generate_circle_kernel(inner_dim); 
@@ -120,4 +154,11 @@ export function pretty_print_array_as_matrix(array) {
         s = s + temp + '\n';
     }
     return s;
+}
+
+
+
+
+function generate_sigmoid_kernel(kernel_radius) {
+
 }
